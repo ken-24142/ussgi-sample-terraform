@@ -1,17 +1,18 @@
 # ====================================================
 # 各サービス用エンドポイント
 # ====================================================
+# 現在のリージョンを取得
+data "aws_region" "current" {}
+
 # エンドポイント
 ## ECR用
 resource "aws_vpc_endpoint" "samp_ecr_api" {
   vpc_id            = aws_vpc.samp_vpc.id
-  service_name      = "com.amazonaws.ap-northeast-1.ecr.api"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
   vpc_endpoint_type = "Interface"
 
   subnet_ids = [
-    aws_subnet.samp_subnet_pri[0].id,
-    aws_subnet.samp_subnet_pri[1].id,
-    aws_subnet.samp_subnet_pri[2].id
+    for subnet in aws_subnet.samp_subnet_pri : subnet.id
   ]
 
   security_group_ids = [aws_security_group.vpc_endpoint.id]
@@ -25,13 +26,11 @@ resource "aws_vpc_endpoint" "samp_ecr_api" {
 
 resource "aws_vpc_endpoint" "samp_ecr_dkr" {
   vpc_id            = aws_vpc.samp_vpc.id
-  service_name      = "com.amazonaws.ap-northeast-1.ecr.dkr"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
   vpc_endpoint_type = "Interface"
 
   subnet_ids = [
-    aws_subnet.samp_subnet_pri[0].id,
-    aws_subnet.samp_subnet_pri[1].id,
-    aws_subnet.samp_subnet_pri[2].id
+    for subnet in aws_subnet.samp_subnet_pri : subnet.id
   ]
 
   security_group_ids = [aws_security_group.vpc_endpoint.id]
@@ -46,13 +45,11 @@ resource "aws_vpc_endpoint" "samp_ecr_dkr" {
 ## CloudWatch Logs用
 resource "aws_vpc_endpoint" "cwlogs" {
   vpc_id            = aws_vpc.samp_vpc.id
-  service_name      = "com.amazonaws.ap-northeast-1.logs"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.logs"
   vpc_endpoint_type = "Interface"
 
   subnet_ids = [
-    aws_subnet.samp_subnet_pri[0].id,
-    aws_subnet.samp_subnet_pri[1].id,
-    aws_subnet.samp_subnet_pri[2].id
+    for subnet in aws_subnet.samp_subnet_pri : subnet.id
   ]
 
   security_group_ids = [aws_security_group.vpc_endpoint.id]
@@ -67,13 +64,11 @@ resource "aws_vpc_endpoint" "cwlogs" {
 ## S3用
 resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.samp_vpc.id
-  service_name      = "com.amazonaws.ap-northeast-1.s3"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = [
-    aws_route_table.samp_rt_pri[0].id,
-    aws_route_table.samp_rt_pri[1].id,
-    aws_route_table.samp_rt_pri[2].id
+    for route_table in aws_route_table.samp_rt_pri : route_table.id
   ]
 
   tags = {
