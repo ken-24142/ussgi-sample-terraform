@@ -26,7 +26,7 @@ terraform {
   required_version = "~> 1.11.0"
 
   backend "s3" {
-    bucket = "test-terraform-012345678901" # 前準備で作成したS3バケット名へ変更
+    bucket = "<先ほど追加したS3バケットのバケット名>" # 前準備で作成したS3バケット名へ変更
     key    = "tf-test-2024.tfstate"
     region = "ap-northeast-1" # 前準備で作成したS3バケットのリージョンへ変更
   }
@@ -36,7 +36,7 @@ provider "aws" {
   region = "ap-northeast-1"
 
   allowed_account_ids = [
-    "012345678901" # 今回リソースを作成するAWSアカウントIDへ変更
+    "0123XXXX4567" # 今回リソースを作成するAWSアカウントIDへ変更
   ]
 
   default_tags {

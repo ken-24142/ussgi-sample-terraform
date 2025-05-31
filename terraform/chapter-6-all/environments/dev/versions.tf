@@ -12,7 +12,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "test-terraform-012345678901" # 前準備で作成したS3バケット名
+    bucket         = "<先ほど追加したS3バケットのバケット名>" # 前準備で作成したS3バケット名
     key            = "tf-test-2025.tfstate"
     region         = "ap-northeast-1" # 前準備で作成したS3バケットのリージョン
     use_lockfile   = true
@@ -23,7 +23,7 @@ provider "aws" {
   region = "ap-northeast-1"
 
   allowed_account_ids = [
-    "012345678901" # 今回リソースを作成するAWSアカウントID
+    "0123XXXX4567" # 今回リソースを作成するAWSアカウントID
   ]
 
   default_tags {

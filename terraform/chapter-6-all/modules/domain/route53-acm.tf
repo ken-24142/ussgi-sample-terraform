@@ -36,6 +36,11 @@ resource "aws_route53_record" "samp_alb_validation" {
   allow_overwrite = true
 }
 
+resource "aws_acm_certificate_validation" "samp_alb_cert_validation" {
+  certificate_arn         = aws_acm_certificate.samp_alb.arn
+  validation_record_fqdns = [for record in aws_route53_record.samp_alb_validation : record.fqdn]
+}
+
 ## Alias record
 resource "aws_route53_record" "samp_alb_alias" {
   zone_id = data.aws_route53_zone.samp_domain.id
